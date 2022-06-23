@@ -16,6 +16,7 @@ model = keras.models.load_model('trained_model.hdf5')
 #Show the model architecture
 model.summary()
 
+# Extracting the simulation parameters of the test set trajectories 
 path, dirs, files = next(os.walk("/export/home/arif/MLatom/fmo_strategies/fmo_data/test_data/2760")) 
 file_count = len(files)
 print("number of files = ", file_count)
@@ -40,8 +41,8 @@ for i in range(file_count):
 
 nsteps = 801
 tt = np.zeros(nsteps, dtype=float)
-tt[0:501] = np.arange(0,501) * 5.0
-tt[501:nsteps] = np.arange(505,2005, 5) * 5.0
+tt[0:501] = np.arange(0,501) * 5.0   # 5 fs step
+tt[501:nsteps] = np.arange(505,2005, 5) * 5.0  # 25 fs
 x = np.zeros((1, 4), dtype=float)
 y = np.zeros((nsteps, 49), dtype=float)
 y1 = np.zeros((nsteps*49, 1), dtype=float)
@@ -55,7 +56,7 @@ for f in range(0, file_count):
     else:
         init_label = 1
     x[0,0] = init_label
-    x[0,1] = gamma[f]/300
+    x[0,1] = gamma[f]/300   # normalize 
     x[0,2] = lamb[f]/310
     x[0,3] = temp[f]/310
     x_pred = x[0,:]
